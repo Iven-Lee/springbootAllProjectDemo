@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--maven普通工程作为dubbo接口工程-->
+
+    <parent>
+        <artifactId>springboot-parent</artifactId>
+        <groupId>com.Iven.Demo</groupId>
+        <version>1.0.0</version>
+        <relativePath>../springboot-parent/pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>springboot-dubbo-ssm-interface</artifactId>
+
+
+</project>

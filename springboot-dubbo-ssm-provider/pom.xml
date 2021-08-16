@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--springboot的web工程，作为dubbo的服务提供者-->
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--作为父工程的子工程（复制接口工程的parent）-->
+    <parent>
+        <artifactId>springboot-parent</artifactId>
+        <groupId>com.Iven.Demo</groupId>
+        <version>1.0.0</version>
+        <relativePath>../springboot-parent/pom.xml</relativePath>
+    </parent>
+
+
+    <artifactId>springboot-dubbo-ssm-provider</artifactId>
+
+    <name>springboot-dubbo-ssm-provider</name>
+    <description>Demo project for Spring Boot</description>
+
+
+
+    <!--
+        添加web、dubbo,zookeeper,mybatis,mysql,redis,接口工程
+    -->
+    <dependencies>
+        <!--SpringBoot框架web项目起步依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--Dubbo集成SpringBoot框架起步依赖-->
+        <dependency>
+            <groupId>com.alibaba.spring.boot</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!--zookeeper注册中心依赖-->
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+        </dependency>
+
+        <!--MySQL驱动依赖-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!--MyBatis集成Springboot框架起步依赖-->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!--SpringBoot集成Redis起步依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!--接口工程依赖（自己创建的第三方java工程的依赖版本号不需要由父工程再次管理）-->
+        <dependency>
+            <groupId>com.Iven.Demo</groupId>
+            <artifactId>springboot-dubbo-ssm-interface</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <resources>
+            <!--扫描.xml等文件-->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,73 @@
+1.@Autowired
+    org.springframework.beans.factory.annotation.Autowired
+    SpringBoot项目中常用。简单来说就是引入由Spring容器管理的bean。
+2.@Resource
+    javax.annotation.Resource
+    作用相当于@Autowired，只不过@Autowired是byType自动注入，而@Resource默认byName自动注入。
+3.@Reference
+    @Reference是dubbo的注解，也是注入，他一般注入的是分布式的远程服务的对象，需要dubbo配置使用。
+简单来说他们的区别：
+    @Reference注入的是分布式中的远程服务对象，@Resource和@Autowired注入的是本地spring容器中的对象。
+
+
+
+SpringBoot+Dubbo+MyBatis+Redis+Thymeleaf项目
+    ----实现对数据库的增删改查、缓存操作
+    ----主要目的是练习Springboot如何集成各类技术进行项目开发
+ 创建普通maven的父工程：springboot-parent---实现多模块管理机制
+    maven父工程必须遵循两点：
+    1、将src目录删掉
+    2、设置pom.xml：
+        1）、添加<packaging>标签---标签文本内容必须设置为pom
+        2）、添加springboot的父工程：spring-boot-starter-parent
+                ----将父工程由普通maven工程转换成springboot工程
+        3）、添加父工程管理子模块的所有依赖
+                ----<dependencyManagement>--<dependencies>--<dependency>
+                注：自己创建的第三方java工程的依赖版本号不需要由父工程再次管理：例接口工程
+        4）、添加父工程管理依赖的版本号：版本号标签名称：项目名称+字段version
+                ----<properties>---<项目名称-version>
+
+ 创建普通maven的dubbo模式的接口工程：springboot-dubbo-ssm-interface
+    1、设置pom.xml：添加父工程<parent>
+    2、创建数据库实体类(SqlName.java)：com.iven.springboot.model
+        ----注：必须实现Serializable接口
+        （JVM自动生成序列化版本号,进行对象序列化的主要原因是实现对象持久化和进行网络传输）
+    3、创建提供服务的接口类（StudentService.java）：com.iven.springboot.service
+
+ 创建springboot的dubbo模式的服务提供者工程：springboot-dubbo-ssm-provider
+    1、设置pom.xml：
+       1）、添加父工程<parent>
+       2）、添加依赖（版本号由父工程管理）----web、dubbo,zookeeper,mysql、mybatis,redis,接口工程
+            *1*、SpringBoot框架web项目起步依赖：spring-boot-starter-web
+            *2*、Dubbo集成SpringBoot框架起步依赖：dubbo-spring-boot-starter
+            *3*、zookeeper注册中心依赖：zkclient
+            *4*、MySQL驱动依赖：mysql-connector-java
+            *5*、MyBatis集成Springboot框架起步依赖：mybatis-spring-boot-starter
+            *6*、SpringBoot集成Redis起步依赖：spring-boot-starter-data-redis
+            *7*、接口工程依赖：springboot-dubbo-ssm-interface
+       3）、添加.xml等文件的组件扫描器<resources>
+                ----扫描mapper配置包时，springboot不能自动编译接口的映射文件（xml）,需要手动指定
+    2、创建操作数据表类(StudentDao.java)：com.iven.springboot.mapper
+    3、创建对应的数据操作的mapper文件：com/iven/springboot/mapper/StudentDao.xml
+    4、创建提供服务的接口的实现类(StudentServiceImpl.java)：com.iven.springboot.service
+    5、编写核心配置文件application.properties----实现多环境配置
+
+
+    5、主类上
+           1）、扫描mapper配置包：@MapperScan(basePackages = "com.iven.springboot.mapper")
+           2）、开启dubbo配置：@EnableDubboConfiguration
+
+ 创建springboot的dubbo模式的服务消费者工程：springboot-dubbo-ssm-consumer
+    1、设置pom.xml：
+       1）、添加父工程<parent>
+       2）、添加依赖（版本号由父工程管理）----thymeleaf、web、dubbo,zookeeper,接口工程
+            *1*、SpringBoot框架集成thymeleaf前端模版引擎起步依赖：spring-boot-starter-thymeleaf
+            *2*、SpringBoot框架web项目起步依赖：spring-boot-starter-web
+            *3*、Dubbo集成Springboot框架起步依赖：dubbo-spring-boot-starter
+            *4*、zookeeper注册中心依赖：zkclient
+            *5*、接口工程依赖：springboot-dubbo-ssm-interface
+    2、编写核心配置文件application.properties----实现多环境配置
+    3、创建业务逻辑层的操作类（StudentController.java）：com.iven.springboot.web
+    4、编写一个thymeleaf模板引擎页面：resources/templates/studentDetail.html
+
+    5、主类必须开启dubbo配置：使用@EnableDubboConfiguration
